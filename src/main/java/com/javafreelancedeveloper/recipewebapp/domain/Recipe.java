@@ -1,5 +1,6 @@
 package com.javafreelancedeveloper.recipewebapp.domain;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -22,12 +23,13 @@ public class Recipe {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	private String desciption;
+	private String description;
 	private Integer prepTime;
 	private Integer cookTime;
 	private Integer servings;
 	private String source;
 	private String url;
+	@Lob
 	private String directions;
 	@Enumerated(value = EnumType.STRING)
 	private Difficulty difficulty;
@@ -36,17 +38,17 @@ public class Recipe {
 	@OneToOne(cascade = CascadeType.ALL)
 	private Notes notes;
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "recipe")
-	private Set<Ingredient> ingredients;
+	private Set<Ingredient> ingredients = new HashSet<Ingredient>();
 	@ManyToMany
-	@JoinTable(name="recipe_category", joinColumns=@JoinColumn(name="recipe_id"), inverseJoinColumns=@JoinColumn(name="category_id"))
-	private Set<Category> categories;
+	@JoinTable(name = "recipe_category", joinColumns = @JoinColumn(name = "recipe_id"), inverseJoinColumns = @JoinColumn(name = "category_id"))
+	private Set<Category> categories = new HashSet<Category>();
 
-	public String getDesciption() {
-		return desciption;
+	public String getDescription() {
+		return description;
 	}
 
-	public void setDesciption(String desciption) {
-		this.desciption = desciption;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public Integer getPrepTime() {
@@ -111,6 +113,7 @@ public class Recipe {
 
 	public void setNotes(Notes notes) {
 		this.notes = notes;
+		this.notes.setRecipe(this);
 	}
 
 	public Long getId() {
@@ -128,6 +131,11 @@ public class Recipe {
 	public void setIngredients(Set<Ingredient> ingredients) {
 		this.ingredients = ingredients;
 	}
+	
+	public void addIngredient(Ingredient ingredient) {
+		ingredient.setRecipe(this);
+		this.ingredients.add(ingredient);
+	}
 
 	public Difficulty getDifficulty() {
 		return difficulty;
@@ -143,6 +151,31 @@ public class Recipe {
 
 	public void setCategories(Set<Category> categories) {
 		this.categories = categories;
+	}
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Recipe other = (Recipe) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
 	}
 
 }

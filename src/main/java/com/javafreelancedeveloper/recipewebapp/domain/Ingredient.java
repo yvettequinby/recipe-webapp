@@ -20,8 +20,18 @@ public class Ingredient {
 	private BigDecimal amount;
 	@ManyToOne
 	private Recipe recipe;
-	@OneToOne(fetch=FetchType.EAGER)
+	@OneToOne(fetch = FetchType.EAGER)
 	private UnitOfMeasure uom;
+
+	public Ingredient() {
+
+	}
+
+	public Ingredient(String description, BigDecimal amount, UnitOfMeasure uom) {
+		this.description = description;
+		this.amount = amount;
+		this.uom = uom;
+	}
 
 	public Long getId() {
 		return id;
@@ -61,6 +71,31 @@ public class Ingredient {
 
 	public void setUom(UnitOfMeasure uom) {
 		this.uom = uom;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Ingredient other = (Ingredient) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
 	}
 
 }

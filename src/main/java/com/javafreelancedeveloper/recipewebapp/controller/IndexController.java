@@ -1,35 +1,30 @@
 package com.javafreelancedeveloper.recipewebapp.controller;
 
-import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.javafreelancedeveloper.recipewebapp.domain.Category;
-import com.javafreelancedeveloper.recipewebapp.domain.UnitOfMeasure;
-import com.javafreelancedeveloper.recipewebapp.repository.CategoryRepository;
-import com.javafreelancedeveloper.recipewebapp.repository.UnitOfMeasureRepository;
+import com.javafreelancedeveloper.recipewebapp.domain.Recipe;
+import com.javafreelancedeveloper.recipewebapp.service.RecipeService;
 
 @Controller
 public class IndexController {
 	
-	private CategoryRepository categoryRepository;
-	private UnitOfMeasureRepository unitOfMeasureRepository;
+	private final RecipeService recipeService;
 	
 	@Autowired
-	public IndexController(CategoryRepository categoryRepository, UnitOfMeasureRepository unitOfMeasureRepository) {
+	public IndexController(RecipeService recipeService) {
 		super();
-		this.categoryRepository = categoryRepository;
-		this.unitOfMeasureRepository = unitOfMeasureRepository;
+		this.recipeService = recipeService;
 	}
 
 	@RequestMapping({"", "/", "/index"})
-	public String displayIndexPage() {
-		Optional<Category> category = categoryRepository.findByDescription("Vegan");
-		Optional<UnitOfMeasure> unitOfMeasure = unitOfMeasureRepository.findByDescription("Cup");
-		System.out.println("Category ID: " + category.get().getId());
-		System.out.println("UnitOfMeasure ID: " + unitOfMeasure.get().getId());
+	public String displayIndexPage(Model model) {
+		Set<Recipe> recipes = recipeService.listRecipes();
+		model.addAttribute("recipes", recipes);
 		return "index";
 	}
 
