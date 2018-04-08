@@ -2,6 +2,7 @@ package com.javafreelancedeveloper.recipewebapp.service;
 
 import java.util.Set;
 
+import com.javafreelancedeveloper.recipewebapp.command.RecipeCommand;
 import com.javafreelancedeveloper.recipewebapp.domain.Recipe;
 
 public interface RecipeService {
@@ -9,5 +10,7 @@ public interface RecipeService {
 	Set<Recipe> listRecipes();
 
 	Recipe findById(Long id);
+	
+	RecipeCommand saveRecipe(RecipeCommand recipeCommand);
 
 }
