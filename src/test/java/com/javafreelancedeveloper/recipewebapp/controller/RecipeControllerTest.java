@@ -49,15 +49,13 @@ public class RecipeControllerTest {
 		RecipeCommand recipe = new RecipeCommand();
 		recipe.setId(recipeId);
 
-		MockMvc mockmvc = MockMvcBuilders.standaloneSetup(recipeController).build();
+		when(recipeService.getRecipe(recipeId)).thenReturn(recipe);
 
-		when(recipeService.findById(recipeId)).thenReturn(recipe);
-
-		mockmvc.perform(get("/recipe/" + recipeId.toString() + "/show")).andExpect(status().isOk()).andExpect(view().name("recipe/show")).andExpect(model().attributeExists("recipe"));
+		mockMvc.perform(get("/recipe/" + recipeId.toString() + "/show")).andExpect(status().isOk()).andExpect(view().name("recipe/show")).andExpect(model().attributeExists("recipe"));
 
 		String result = recipeController.show(recipeId.toString(), model);
 		assertEquals("recipe/show", result);
-		verify(recipeService, times(2)).findById(recipeId);
+		verify(recipeService, times(2)).getRecipe(recipeId);
 
 	}
 
@@ -78,8 +76,14 @@ public class RecipeControllerTest {
 	public void testGetUpdateView() throws Exception {
 		RecipeCommand command = new RecipeCommand();
 		command.setId(2L);
-		when(recipeService.findById(anyLong())).thenReturn(command);
+		when(recipeService.getRecipe(anyLong())).thenReturn(command);
 		mockMvc.perform(get("/recipe/1/update")).andExpect(status().isOk()).andExpect(view().name("recipe/recipeform")).andExpect(model().attributeExists("recipe"));
+	}
+	
+	@Test
+	public void testDeleteAction() throws Exception {
+		mockMvc.perform(get("/recipe/1/delete")).andExpect(status().is3xxRedirection()).andExpect(view().name("redirect:/"));
+		verify(recipeService, times(1)).deleteRecipe(anyLong());
 	}
 
 }
