@@ -9,7 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.javafreelancedeveloper.recipewebapp.domain.Recipe;
+import com.javafreelancedeveloper.recipewebapp.command.RecipeCommand;
 import com.javafreelancedeveloper.recipewebapp.service.RecipeService;
 
 @Slf4j
@@ -27,7 +27,7 @@ public class IndexController {
 	@RequestMapping({"", "/", "/index"})
 	public String displayIndexPage(Model model) {
 		log.debug("Displaying index page");
-		Set<Recipe> recipes = recipeService.listRecipes();
+		Set<RecipeCommand> recipes = recipeService.listRecipes();
 		model.addAttribute("recipes", recipes);
 		return "index";
 	}

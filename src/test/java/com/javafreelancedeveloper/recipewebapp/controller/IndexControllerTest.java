@@ -21,6 +21,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.ui.Model;
 
+import com.javafreelancedeveloper.recipewebapp.command.RecipeCommand;
 import com.javafreelancedeveloper.recipewebapp.domain.Recipe;
 import com.javafreelancedeveloper.recipewebapp.service.RecipeService;
 
@@ -48,11 +49,11 @@ public class IndexControllerTest {
 	public void testDisplayIndexPage() {
 
 		// Given
-		Recipe recipe1 = new Recipe();
+		RecipeCommand recipe1 = new RecipeCommand();
 		recipe1.setId(1L);
-		Recipe recipe2 = new Recipe();
+		RecipeCommand recipe2 = new RecipeCommand();
 		recipe2.setId(2L);
-		Set<Recipe> recipes = new HashSet<Recipe>();
+		Set<RecipeCommand> recipes = new HashSet<RecipeCommand>();
 		recipes.add(recipe1);
 		recipes.add(recipe2);
 

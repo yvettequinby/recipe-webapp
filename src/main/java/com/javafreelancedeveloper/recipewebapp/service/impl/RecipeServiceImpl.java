@@ -4,12 +4,11 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
-import org.springframework.transaction.annotation.Transactional;
-
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.javafreelancedeveloper.recipewebapp.command.RecipeCommand;
 import com.javafreelancedeveloper.recipewebapp.converter.RecipeCommandToRecipeConverter;
@@ -35,20 +34,24 @@ public class RecipeServiceImpl implements RecipeService {
 	}
 
 	@Override
-	public Set<Recipe> listRecipes() {
+	@Transactional
+	public Set<RecipeCommand> listRecipes() {
 		log.debug("Requesting recipe list...");
-		Set<Recipe> recipes = new HashSet<Recipe>();
-		recipeRepository.findAll().iterator().forEachRemaining(recipes::add);
-		return recipes;
+		Set<RecipeCommand> recipeCommands = new HashSet<RecipeCommand>();
+		Iterable<Recipe> recipes = recipeRepository.findAll();
+		recipes.forEach(recipe -> recipeCommands.add(recipeToRecipeCommandConverter.convert(recipe)));
+		return recipeCommands;
 	}
 
 	@Override
-	public Recipe findById(Long id) {
+	@Transactional
+	public RecipeCommand findById(Long id) {
 		Optional<Recipe> recipe = recipeRepository.findById(id);
 		if (!recipe.isPresent()) {
 			throw new RuntimeException("Recipe Not Found!");
 		}
-		return recipe.get();
+		RecipeCommand recipeCommand = recipeToRecipeCommandConverter.convert(recipe.get());
+		return recipeCommand;
 	}
 
 	@Override

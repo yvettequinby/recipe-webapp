@@ -1,9 +1,9 @@
 package com.javafreelancedeveloper.recipewebapp.service.impl;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -13,6 +13,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import com.javafreelancedeveloper.recipewebapp.command.RecipeCommand;
 import com.javafreelancedeveloper.recipewebapp.domain.Recipe;
 import com.javafreelancedeveloper.recipewebapp.repository.RecipeRepository;
 
@@ -37,7 +38,7 @@ public class RecipeServiceImplTest {
 
 		when(recipeRepository.findAll()).thenReturn(recipes);
 
-		Set<Recipe> result = recipeServiceImpl.listRecipes();
+		Set<RecipeCommand> result = recipeServiceImpl.listRecipes();
 		assertEquals(1, result.size());
 		verify(recipeRepository, times(1)).findAll();
 	}
