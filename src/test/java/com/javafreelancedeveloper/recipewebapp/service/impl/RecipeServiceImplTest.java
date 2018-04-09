@@ -14,6 +14,8 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import com.javafreelancedeveloper.recipewebapp.command.RecipeCommand;
+import com.javafreelancedeveloper.recipewebapp.converter.RecipeCommandToRecipeConverter;
+import com.javafreelancedeveloper.recipewebapp.converter.RecipeToRecipeCommandConverter;
 import com.javafreelancedeveloper.recipewebapp.domain.Recipe;
 import com.javafreelancedeveloper.recipewebapp.repository.RecipeRepository;
 
@@ -22,21 +24,27 @@ public class RecipeServiceImplTest {
 	private RecipeServiceImpl recipeServiceImpl;
 	@Mock
 	private RecipeRepository recipeRepository;
+	@Mock
+	private RecipeCommandToRecipeConverter recipeCommandToRecipeConverter;
+	@Mock
+	private RecipeToRecipeCommandConverter recipeToRecipeCommandConverter;
 
 	@Before
 	public void setUp() throws Exception {
 		MockitoAnnotations.initMocks(this);
-		recipeServiceImpl = new RecipeServiceImpl(recipeRepository, null, null);
+		recipeServiceImpl = new RecipeServiceImpl(recipeRepository, recipeCommandToRecipeConverter, recipeToRecipeCommandConverter);
 	}
 
 	@Test
 	public void testListRecipes() {
 
+		RecipeCommand recipeCommand = new RecipeCommand();
 		Recipe recipe = new Recipe();
 		Set<Recipe> recipes = new HashSet<Recipe>();
 		recipes.add(recipe);
 
 		when(recipeRepository.findAll()).thenReturn(recipes);
+		when(recipeToRecipeCommandConverter.convert(recipe)).thenReturn(recipeCommand);
 
 		Set<RecipeCommand> result = recipeServiceImpl.listRecipes();
 		assertEquals(1, result.size());
