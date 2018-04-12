@@ -24,7 +24,14 @@
 		            <div class="panel panel-primary">
 		
 		                <div class="panel-heading">
-		                    <h1 class="panel-title">Ingredient</h1>
+		                    <div class="row">
+                                <div class="col-md-10 ">
+                                    <h1 class="panel-title">Ingredient</h1>
+                                </div>
+                                <div class="col-md-2">
+                                    <a class="btn btn-default" href="#" th:href="${'/recipe/' + ingredient.recipeId + '/ingredients'}" role="button">Back</a>
+                                </div>
+                            </div>
 		                </div>
 		                <div class="panel-body">
 		
@@ -39,9 +46,6 @@
 		                            <tr th:remove="all">
 		                                <td>12333</td>
 		                                <td>Tasty Goodnees 2</td>
-		                                <td><a href="#">View</a></td>
-		                                <td><a href="#">Update</a></td>
-		                                <td><a href="#">Delete</a></td>
 		                            </tr>
 		                            <tr>
 		                                <td th:text="${ingredient.id}">334</td>
