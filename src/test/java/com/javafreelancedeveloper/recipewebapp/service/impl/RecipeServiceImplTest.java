@@ -1,11 +1,13 @@
 package com.javafreelancedeveloper.recipewebapp.service.impl;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 import org.junit.Before;
@@ -17,6 +19,7 @@ import com.javafreelancedeveloper.recipewebapp.command.RecipeCommand;
 import com.javafreelancedeveloper.recipewebapp.converter.RecipeCommandToRecipeConverter;
 import com.javafreelancedeveloper.recipewebapp.converter.RecipeToRecipeCommandConverter;
 import com.javafreelancedeveloper.recipewebapp.domain.Recipe;
+import com.javafreelancedeveloper.recipewebapp.exception.NotFoundException;
 import com.javafreelancedeveloper.recipewebapp.repository.RecipeRepository;
 
 public class RecipeServiceImplTest {
@@ -56,6 +59,14 @@ public class RecipeServiceImplTest {
 		Long recipeId = 3L;
 		recipeServiceImpl.deleteRecipe(recipeId);
 		verify(recipeRepository, times(1)).deleteById(recipeId);
+	}
+	
+	
+	@Test(expected = NotFoundException.class)
+    public void getRecipe() throws Exception {
+	 	Optional<Recipe> recipeOptional = Optional.empty();
+        when(recipeRepository.findById(anyLong())).thenReturn(recipeOptional);
+        recipeServiceImpl.getRecipe(1L); // go boom!
 	}
 
 }

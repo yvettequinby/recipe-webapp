@@ -14,6 +14,7 @@ import com.javafreelancedeveloper.recipewebapp.command.RecipeCommand;
 import com.javafreelancedeveloper.recipewebapp.converter.RecipeCommandToRecipeConverter;
 import com.javafreelancedeveloper.recipewebapp.converter.RecipeToRecipeCommandConverter;
 import com.javafreelancedeveloper.recipewebapp.domain.Recipe;
+import com.javafreelancedeveloper.recipewebapp.exception.NotFoundException;
 import com.javafreelancedeveloper.recipewebapp.repository.RecipeRepository;
 import com.javafreelancedeveloper.recipewebapp.service.RecipeService;
 
@@ -48,7 +49,7 @@ public class RecipeServiceImpl implements RecipeService {
 	public RecipeCommand getRecipe(Long id) {
 		Optional<Recipe> recipe = recipeRepository.findById(id);
 		if (!recipe.isPresent()) {
-			throw new RuntimeException("Recipe Not Found!");
+			throw new NotFoundException("Recipe Not Found For ID [" + id + "].");
 		}
 		RecipeCommand recipeCommand = recipeToRecipeCommandConverter.convert(recipe.get());
 		return recipeCommand;

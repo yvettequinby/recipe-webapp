@@ -22,6 +22,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.ui.Model;
 
 import com.javafreelancedeveloper.recipewebapp.command.RecipeCommand;
+import com.javafreelancedeveloper.recipewebapp.exception.NotFoundException;
 import com.javafreelancedeveloper.recipewebapp.service.RecipeService;
 
 public class RecipeControllerTest {
@@ -37,9 +38,8 @@ public class RecipeControllerTest {
 	public void setUp() throws Exception {
 		MockitoAnnotations.initMocks(this);
 		recipeController = new RecipeController(recipeService);
-		mockMvc = MockMvcBuilders.standaloneSetup(recipeController).build();
+		mockMvc = MockMvcBuilders.standaloneSetup(recipeController).setControllerAdvice(new ControllerExceptionHandler()).build();
 	}
-
 
 	@Test
 	public void testShow() throws Exception {
@@ -57,6 +57,18 @@ public class RecipeControllerTest {
 		assertEquals("recipe/show", result);
 		verify(recipeService, times(2)).getRecipe(recipeId);
 
+	}
+
+	@Test
+	public void testGetRecipeNotFound() throws Exception {
+		when(recipeService.getRecipe(anyLong())).thenThrow(NotFoundException.class);
+		mockMvc.perform(get("/recipe/1/show")).andExpect(status().isNotFound()).andExpect(view().name("404error"));
+	}
+	
+	@Test
+	public void testGetRecipeNumberFormatException() throws Exception {
+		when(recipeService.getRecipe(anyLong())).thenThrow(NotFoundException.class);
+		mockMvc.perform(get("/recipe/xxx/show")).andExpect(status().isBadRequest()).andExpect(view().name("400error"));
 	}
 
 	@Test
@@ -79,7 +91,7 @@ public class RecipeControllerTest {
 		when(recipeService.getRecipe(anyLong())).thenReturn(command);
 		mockMvc.perform(get("/recipe/1/update")).andExpect(status().isOk()).andExpect(view().name("recipe/recipeform")).andExpect(model().attributeExists("recipe"));
 	}
-	
+
 	@Test
 	public void testDeleteAction() throws Exception {
 		mockMvc.perform(get("/recipe/1/delete")).andExpect(status().is3xxRedirection()).andExpect(view().name("redirect:/"));
