@@ -24,9 +24,20 @@
 		            <div class="panel panel-primary">
 		
 		                <div class="panel-heading">
-		                    <h1 class="panel-title">My Recipes!</h1>
+		                    <div class="row">
+                               <div class="col-md-10 ">
+                                   <h1 class="panel-title">Recipe List</h1>
+                               </div>
+                               <div class="col-md-2">
+                                   <a class="btn btn-default" href="#" th:href="${'/recipe/new'}" role="button">Create</a>
+                               </div>
+                           </div>
 		                </div>
 		                <div class="panel-body">
+			                <div class="table-responsive" th:if="${#lists.isEmpty(recipes)}">
+			                	There are no recipes in the database! 
+			                	Please <a href="/recipe/new">create</a> one.
+			                </div>
 		                    <div class="table-responsive" th:if="${not #lists.isEmpty(recipes)}">
 		                        <table class="table table-hover ">
 		                            <thead class="thead-inverse">
