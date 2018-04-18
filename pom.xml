@@ -4,11 +4,11 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.javafreelancedeveloper</groupId>
-	<artifactId>recipe-webapp</artifactId>
+	<artifactId>spring-web-mysql-demo</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>recipe-webapp</name>
+	<name>spring-web-mysql-demo</name>
 	<description>Demo project for Spring Boot</description>
 
 	<parent>
