@@ -42,7 +42,7 @@ public class Recipe {
 	private Notes notes;
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "recipe")
 	private Set<Ingredient> ingredients = new HashSet<Ingredient>();
-	@ManyToMany
+	@ManyToMany(cascade = CascadeType.DETACH)
 	@JoinTable(name = "recipe_category", joinColumns = @JoinColumn(name = "recipe_id"), inverseJoinColumns = @JoinColumn(name = "category_id"))
 	private Set<Category> categories = new HashSet<Category>();
 
@@ -51,12 +51,10 @@ public class Recipe {
 		if (notes != null) {
 			this.notes.setRecipe(this);
 		}
-
 	}
 
 	public void addIngredient(Ingredient ingredient) {
 		ingredient.setRecipe(this);
 		this.ingredients.add(ingredient);
 	}
-
 }

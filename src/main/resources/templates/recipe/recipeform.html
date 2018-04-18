@@ -45,25 +45,6 @@
 		                                </div>
 		                            </div>
 		                            <div class="row">
-		                                <div class="col-md-3 form-group">
-		                                    <label>Categories:</label>
-		                                </div>
-		                                <div class="col-md-9 form-group">
-		                                    <div class="radio">
-		                                        <label>
-		                                            <input type="checkbox" value=""/>
-		                                            Cat 1
-		                                        </label>
-		                                    </div>
-		                                    <div class="radio" th:remove="all">
-		                                        <label>
-		                                            <input type="checkbox" value=""/>
-		                                            Cat 2
-		                                        </label>
-		                                    </div>
-		                                </div>
-		                            </div>
-		                            <div class="row">
 		                                <div class="col-md-3 form-group" th:class="${#fields.hasErrors('prepTime')} ? 'col-md-3 form-group has-error' : 'col-md-3 form-group'">
 		                                    <label>Prep Time:</label>
 		                                    <input type="text" class="form-control" th:field="*{prepTime}" th:errorclass="has-error"/>
@@ -118,6 +99,31 @@
 		                                            <li th:each="err : ${#fields.errors('url')}" th:text="${err}"/>
 		                                        </ul>
 		                                    </span>
+		                                </div>
+		                            </div>
+		                        </div>
+		                    </div>
+		                    <div class="panel panel-primary">
+		                        <div class="panel-heading">
+		                            <div class="row">
+		                                <div class="col-md-10 ">
+		                                    <h1 class="panel-title">Categories</h1>
+		                                </div>
+		                                <div th:each="catEach, idx : ${recipe.categories}" >
+	                                        <input  type="hidden" th:field="*{categories[__${idx.index}__].id}" />
+	                                    </div>
+		                            </div>
+		                        </div>
+		                        <div class="panel-body">
+		                            <div class="row">
+		                                <div class="col-md-12">
+		                                    <ul>
+		                                        <li th:remove="all">Indian</li>
+		                                        <li th:remove="all">Italian</li>
+		                                        <li th:each="category : ${recipe.categories}"
+		                                            th:text="${category.description}">Vegan
+		                                        </li>
+		                                    </ul>
 		                                </div>
 		                            </div>
 		                        </div>
