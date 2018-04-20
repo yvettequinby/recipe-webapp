@@ -25,11 +25,14 @@
 		                <div class="panel panel-primary">
 		                    <div class="panel-heading">
 		                       <div class="row">
-	                                <div class="col-md-10 ">
+	                                <div class="col-md-8 ">
 	                                    <h1 class="panel-title" th:text="${recipe.description}">Recipe Description Here!</h1>
 	                                </div>
 	                                <div class="col-md-2">
 	                                    <a class="btn btn-default" href="#" th:href="${'/recipe/' + recipe.id + '/update'}" role="button">Edit</a>
+	                                </div>
+	                                <div class="col-md-2">
+	                                    <a class="btn btn-default" href="#" th:href="${'/'}" role="button">Back</a>
 	                                </div>
 	                            </div>
 		                    </div>
